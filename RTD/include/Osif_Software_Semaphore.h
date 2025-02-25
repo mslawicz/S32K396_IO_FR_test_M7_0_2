@@ -1,18 +1,18 @@
 /*==================================================================================================
-*   Project              : RTD AUTOSAR 4.7
-*   Platform             : CORTEXM
-*   Peripheral           : S32K3XX
-*   Dependencies         : none
+* Project : RTD AUTOSAR 4.7
+* Platform : CORTEXM
+* Peripheral : S32K3XX
+* Dependencies : none
 *
-*   Autosar Version      : 4.7.0
-*   Autosar Revision     : ASR_REL_4_7_REV_0000
-*   Autosar Conf.Variant :
-*   SW Version           : 5.0.0
-*   Build Version        : S32K3_RTD_5_0_0_D2408_ASR_REL_4_7_REV_0000_20241002
+* Autosar Version : 4.7.0
+* Autosar Revision : ASR_REL_4_7_REV_0000
+* Autosar Conf.Variant :
+* SW Version : 5.0.0
+* Build Version : S32K3_RTD_5_0_0_D2408_ASR_REL_4_7_REV_0000_20241002
 *
-*   Copyright 2020 - 2024 NXP
+* Copyright 2020 - 2024 NXP
 *
-*   NXP Confidential and Proprietary. This software is owned or controlled by NXP and may only be 
+* NXP Confidential and Proprietary. This software is owned or controlled by NXP and may only be 
 *   used strictly in accordance with the applicable license terms.  By expressly 
 *   accepting such terms or by downloading, installing, activating and/or otherwise 
 *   using the software, you are agreeing that you have read, and that you agree to 
@@ -20,14 +20,13 @@
 *   bound by the applicable license terms, then you may not retain, install,
 *   activate or otherwise use the software.
 ==================================================================================================*/
-
-#ifndef DEVICEDEFINITION_H
-#define DEVICEDEFINITION_H
+#ifndef OSIF_SOFTWARE_SEMAPHORE_H
+#define OSIF_SOFTWARE_SEMAPHORE_H
 
 /**
-*   @file   DeviceDefinition.h
+*   @file Osif_Software_Semaphore.h
 *
-*   @addtogroup BASENXP_COMPONENT
+*   @addtogroup osif_drv
 *   @{
 */
 
@@ -35,83 +34,76 @@
 extern "C"{
 #endif
 
-
 /*==================================================================================================
-*                                         INCLUDE FILES
+*                                          INCLUDE FILES
 * 1) system and project includes
 * 2) needed interfaces from external units
 * 3) internal and external interfaces from this unit
 ==================================================================================================*/
+#include "StandardTypes.h"
 
 /*==================================================================================================
-*                               SOURCE FILE VERSION INFORMATION
+*                                 SOURCE FILE VERSION INFORMATION
 ==================================================================================================*/
+#define OSIF_SOFTWARE_SEMAPHORE_VENDOR_ID_H                    43
+#define OSIF_SOFTWARE_SEMAPHORE_AR_RELEASE_MAJOR_VERSION_H     4
+#define OSIF_SOFTWARE_SEMAPHORE_AR_RELEASE_MINOR_VERSION_H     7
+#define OSIF_SOFTWARE_SEMAPHORE_AR_RELEASE_REVISION_VERSION_H  0
+#define OSIF_SOFTWARE_SEMAPHORE_SW_MAJOR_VERSION_H             5
+#define OSIF_SOFTWARE_SEMAPHORE_SW_MINOR_VERSION_H             0
+#define OSIF_SOFTWARE_SEMAPHORE_SW_PATCH_VERSION_H             0
 
-/** 
-@{
-* @brief Parameters that shall be published within the modules header file.
-*       The integration of incompatible files shall be avoided.
-*/
-#define DEVICEDEFINITION_VENDOR_ID                       43
-#define DEVICEDEFINITION_MODULE_ID                       0
-#define DEVICEDEFINITION_AR_RELEASE_MAJOR_VERSION_H      4
-#define DEVICEDEFINITION_AR_RELEASE_MINOR_VERSION_H      7
-#define DEVICEDEFINITION_AR_RELEASE_REVISION_VERSION_H   0
-#define DEVICEDEFINITION_SW_MAJOR_VERSION_H              5
-#define DEVICEDEFINITION_SW_MINOR_VERSION_H              0
-#define DEVICEDEFINITION_SW_PATCH_VERSION_H              0
-/**@}*/
 /*==================================================================================================
-*                                      FILE VERSION CHECKS
+*                                       FILE VERSION CHECKS
 ==================================================================================================*/
+/* Checks against StandardTypes.h */
+#ifndef DISABLE_MCAL_INTERMODULE_ASR_CHECK
+    #if ((OSIF_SOFTWARE_SEMAPHORE_AR_RELEASE_MAJOR_VERSION_H != STD_AR_RELEASE_MAJOR_VERSION) || \
+         (OSIF_SOFTWARE_SEMAPHORE_AR_RELEASE_MINOR_VERSION_H != STD_AR_RELEASE_MINOR_VERSION))
+        #error "AutoSar Version Numbers of Osif_Software_Semaphore.h and StandardTypes.h are different"
+    #endif
+#endif
 
 /*==================================================================================================
-*                                           CONSTANTS
+*                                            CONSTANTS
 ==================================================================================================*/
 
 /*==================================================================================================
 *                                       DEFINES AND MACROS
 ==================================================================================================*/
-/** 
-* @brief This macro define specific derivative and sub derivative.
-*/
-
-#ifndef S32K396
-#define S32K396
-#endif
-
-#ifndef DERIVATIVE_S32K396
-#define DERIVATIVE_S32K396
-#endif
-/** 
-* @brief This macro define specific platform.
-*/
-#ifndef S32K3XX
-#define S32K3XX
-#endif
+#define OSIF_SOFTWARE_SEMAPHORE_UNLOCKED_VALUE  0U
 
 /*==================================================================================================
-*                                             ENUMS
+*                                              ENUMS
 ==================================================================================================*/
 
 /*==================================================================================================
-*                                 STRUCTURES AND OTHER TYPEDEFS
+*                                  STRUCTURES AND OTHER TYPEDEFS
 ==================================================================================================*/
 
 /*==================================================================================================
-*                                 GLOBAL VARIABLE DECLARATIONS
+*                                  GLOBAL VARIABLE DECLARATIONS
 ==================================================================================================*/
 
 /*==================================================================================================
-*                                     FUNCTION PROTOTYPES
+*                                       FUNCTION PROTOTYPES
 ==================================================================================================*/
+#define BASENXP_START_SEC_CODE
+#include "BaseNXP_MemMap.h"
+
+/* lock semaphore */
+boolean Osif_Software_Semaphore_Lock(const uint32 *Semaphore, uint32 Lockval);
+
+/* unlock semaphore */
+boolean Osif_Software_Semaphore_Unlock(const uint32 *Semaphore, uint32 Lockval);
+
+#define BASENXP_STOP_SEC_CODE
+#include "BaseNXP_MemMap.h"
 
 #ifdef __cplusplus
 }
 #endif
 
-
 /** @} */
 
-#endif /* DEVICEDEFINITION_H */
-
+#endif /* OSIF_SOFTWARE_SEMAPHORE_H */

@@ -27,7 +27,7 @@
 /**
 *   @file   Soc_Ips.h
 *
-*   @addtogroup BASENXP_COMPONENT
+*  @addtogroup BASENXP_COMPONENT
 *   @{
 */
 
@@ -201,6 +201,7 @@ extern "C"{
 /*==================================================================================================
 *                              Software Erratas for Hardware Erratas
 ==================================================================================================*/
+
 /**
 * @brief Hardware errata for LPSPI: (ERR051588)
 * @details ERR051588 LPSPI: Reset transmit FIFO after FIFO underrun by LPSPI Slave
@@ -212,6 +213,8 @@ extern "C"{
 * @details ERR050705 GMAC/EMAC: Head-Of-Line blocking error due to incorrect packet size when gates of gate control list (GCL) are closed
 */
 #define ERR_IPV_GMAC_E050705    (STD_ON)
+
+
 
 /**
 * @brief Hardware errata for ZIPWIRE: (ERR051988)
@@ -267,3 +270,4 @@ extern "C"{
 /** @} */
 
 #endif /* SOC_IPS_H */
+

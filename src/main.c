@@ -30,9 +30,13 @@
 
 /* Including necessary configuration files. */
 #include "Mcal.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 volatile int exit_code = 0;
 /* User includes */
+
+void vBlinkTask(void *pvParameters);
 
 /*!
   \brief The main function for the project.
@@ -44,14 +48,23 @@ int main(void)
 {
     /* Write your code here */
 
-    for(;;)
-    {
-        if(exit_code != 0)
-        {
-            break;
-        }
-    }
+    /* Create FreeRTOS task */
+    xTaskCreate(vBlinkTask, "BlinkTask", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL);
+
+    /* Start FreeRTOS scheduler */
+    vTaskStartScheduler();
+
+    /* should never reach here */
     return exit_code;
+}
+
+void vBlinkTask(void *pvParameters)
+{
+    (void)pvParameters;
+    while (1)
+    {
+        vTaskDelay(pdMS_TO_TICKS(500));  // 500 ms delay
+    }
 }
 
 /** @} */

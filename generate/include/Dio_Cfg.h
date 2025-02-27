@@ -103,7 +103,7 @@ extern "C"{
 /**
 * @brief          Function @p Dio_FlipChannel() enable switch.
 */
-#define DIO_FLIP_CHANNEL_API           (STD_OFF)
+#define DIO_FLIP_CHANNEL_API           (STD_ON)
 
 /**
 * @brief          Function @p Dio_MaskedWritePort() enable switch.
@@ -247,7 +247,12 @@ extern "C"{
 /**
 * @brief          Symbolic name for the port DioPort_0.
 */
-#define DioConf_DioPort_DioPort_0  ((uint8)0x00U)
+#define DioConf_DioPort_DioPort_0  ((uint8)0x08U)
+/**
+* @brief          Symbolic name for the channel DioChannel_LED1.
+*
+*/
+#define DioConf_DioChannel_DioChannel_LED1  ((uint16)0x008aU)
 
 /*=================================================================================================
 *                                             ENUMS

@@ -28,6 +28,9 @@
          </generated_project_files>
          <pins_profile>
             <processor_version>0.0.0</processor_version>
+            <pin_labels>
+               <pin_label pin_num="E2" pin_signal="PTE10" label="DEBUG_LED1"/>
+            </pin_labels>
          </pins_profile>
          <functions_list>
             <function name="PortContainer_0_BOARD_InitPeripherals">
@@ -597,11 +600,6 @@
                   <data type="Version">1.0.0</data>
                </feature>
             </dependency>
-            <dependency resourceType="Tool" resourceId="Clocks" description="The Clocks tool is required by the Peripherals tool, but it is disabled." problem_level="2" source="Peripherals">
-               <feature name="enabled" evaluation="equal">
-                  <data>true</data>
-               </feature>
-            </dependency>
          </dependencies>
          <generated_project_files>
             <file path="board/Siul2_Port_Ip_Cfg.c" update_enabled="true"/>
@@ -830,7 +828,7 @@
                            <setting name="SIUL2DioIPDevErrorDetect" value="false"/>
                            <setting name="DioVersionInfoApi" value="false"/>
                            <setting name="DioReversePortBits" value="false"/>
-                           <setting name="DioFlipChannelApi" value="false"/>
+                           <setting name="DioFlipChannelApi" value="true"/>
                            <setting name="DioReadZeroForUndefinedPortPins" value="false"/>
                            <setting name="DioMaskedWritePortApi" value="false"/>
                            <setting name="DioEnableUserModeSupport" value="false"/>
@@ -843,8 +841,15 @@
                            <array name="DioPort">
                               <struct name="0">
                                  <setting name="Name" value="DioPort_0"/>
-                                 <setting name="DioPortId" value="0"/>
-                                 <array name="DioChannel"/>
+                                 <setting name="DioPortId" value="8"/>
+                                 <array name="DioChannel">
+                                    <struct name="0">
+                                       <setting name="Name" value="DioChannel_LED1"/>
+                                       <setting name="DioChannelId" value="10"/>
+                                       <setting name="PDACSlot" value="VIRTUAL_WRAPPER_PDAC0"/>
+                                       <array name="DioChannelEcucPartitionRef"/>
+                                    </struct>
+                                 </array>
                                  <array name="DioChannelGroup"/>
                                  <array name="DioPortEcucPartitionRef"/>
                               </struct>

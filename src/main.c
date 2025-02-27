@@ -29,7 +29,9 @@
 */
 
 /* Including necessary configuration files. */
-#include "Mcal.h"
+#include "Mcu.h"
+#include "Port.h"
+#include "Dio.h"
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -46,7 +48,17 @@ void vBlinkTask(void *pvParameters);
 */
 int main(void)
 {
-    /* Write your code here */
+    /* Initialize the Mcu driver */
+    Mcu_Init(NULL_PTR);
+
+    /* Initialize the clock tree and apply PLL as system clock */
+    Mcu_InitClock(McuClockSettingConfig_0);
+
+    /* Apply a mode configuration */
+    Mcu_SetMode(McuModeSettingConf_0);
+
+    /* Initialize all pins using the Port driver */
+    Port_Init(NULL_PTR);
 
     /* Create FreeRTOS task */
     xTaskCreate(vBlinkTask, "BlinkTask", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL);
@@ -63,6 +75,7 @@ void vBlinkTask(void *pvParameters)
     (void)pvParameters;
     while (1)
     {
+    	Dio_FlipChannel(DioConf_DioChannel_DioChannel_LED1);
         vTaskDelay(pdMS_TO_TICKS(500));  // 500 ms delay
     }
 }

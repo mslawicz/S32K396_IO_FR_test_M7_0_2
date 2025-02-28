@@ -31,6 +31,10 @@
             <pin_labels>
                <pin_label pin_num="E2" pin_signal="PTE10" label="DEBUG_LED1"/>
                <pin_label pin_num="L2" pin_signal="PTA26" label="PGOOD-DIG"/>
+               <pin_label pin_num="R17" pin_signal="PTB1" label="SSBC-MOSI"/>
+               <pin_label pin_num="N14" pin_signal="PTC9" label="SSBC-MISO"/>
+               <pin_label pin_num="N15" pin_signal="PTC8" label="SSBC-CLK"/>
+               <pin_label pin_num="L10" pin_signal="PTF28" label="SSBC-CS"/>
             </pin_labels>
          </pins_profile>
          <functions_list>
@@ -71,6 +75,26 @@
                   <pin peripheral="SIUL2" signal="gpio, 26" pin_num="L2" pin_signal="PTA26">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="LPSPI0" signal="lpspi0_sout" pin_num="R17" pin_signal="PTB1">
+                     <pin_features>
+                        <pin_feature name="direction" value="OUTPUT"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="LPSPI0" signal="lpspi0_sin" pin_num="N14" pin_signal="PTC9">
+                     <pin_features>
+                        <pin_feature name="direction" value="INPUT"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="LPSPI0" signal="lpspi0_sck" pin_num="N15" pin_signal="PTC8">
+                     <pin_features>
+                        <pin_feature name="direction" value="OUTPUT"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="LPSPI0" signal="lpspi0_pcs0" pin_num="L10" pin_signal="PTF28">
+                     <pin_features>
+                        <pin_feature name="direction" value="OUTPUT"/>
                      </pin_features>
                   </pin>
                </pins>
@@ -606,6 +630,21 @@
                   <data type="Version">1.0.0</data>
                </feature>
             </dependency>
+            <dependency resourceType="SWComponent" resourceId="platform.driver.dspi_ip" description="Dspi_Ip is not found in the toolchain/IDE project. The project will not compile!" problem_level="2" source="Peripherals">
+               <feature name="enabled" evaluation="equal">
+                  <data type="Boolean">true</data>
+               </feature>
+            </dependency>
+            <dependency resourceType="SWComponent" resourceId="platform.driver.dspi_ip" description="An unsupported version of the Dspi_Ip in the toolchain/IDE project. Required: ${required_value}, actual: ${actual_value}. The project might not compile correctly." problem_level="1" source="Peripherals">
+               <feature name="version" evaluation="equivalent">
+                  <data type="Version">1.0.0</data>
+               </feature>
+            </dependency>
+            <dependency resourceType="Tool" resourceId="Clocks" description="The Clocks tool is required by the Peripherals tool, but it is disabled." problem_level="2" source="Peripherals">
+               <feature name="enabled" evaluation="equal">
+                  <data>true</data>
+               </feature>
+            </dependency>
          </dependencies>
          <generated_project_files>
             <file path="board/Siul2_Port_Ip_Cfg.c" update_enabled="true"/>
@@ -617,6 +656,8 @@
             <file path="generate/include/Clock_Ip_PBcfg.h" update_enabled="true"/>
             <file path="generate/include/DeviceDefinition.h" update_enabled="true"/>
             <file path="generate/include/Dio_Cfg.h" update_enabled="true"/>
+            <file path="generate/include/Dspi_Ip_Cfg.h" update_enabled="true"/>
+            <file path="generate/include/Dspi_Ip_Sa_PBcfg.h" update_enabled="true"/>
             <file path="generate/include/FreeRTOSConfig.h" update_enabled="true"/>
             <file path="generate/include/Igf_Port_Ip_Cfg.h" update_enabled="true"/>
             <file path="generate/include/Igf_Port_Ip_PBcfg.h" update_enabled="true"/>
@@ -642,6 +683,7 @@
             <file path="generate/src/Clock_Ip_Cfg.c" update_enabled="true"/>
             <file path="generate/src/Clock_Ip_PBcfg.c" update_enabled="true"/>
             <file path="generate/src/Dio_Cfg.c" update_enabled="true"/>
+            <file path="generate/src/Dspi_Ip_Sa_PBcfg.c" update_enabled="true"/>
             <file path="generate/src/Igf_Port_Ip_PBcfg.c" update_enabled="true"/>
             <file path="generate/src/Mcu_Cfg.c" update_enabled="true"/>
             <file path="generate/src/Mcu_PBcfg.c" update_enabled="true"/>
@@ -2475,6 +2517,60 @@
                            <setting name="SwPatchVersion" value="0"/>
                            <setting name="VendorApiInfix" value=""/>
                            <setting name="VendorId" value="43"/>
+                        </struct>
+                     </config_set>
+                  </instance>
+                  <instance name="Dspi_Ip" uuid="a554a631-dd1f-4e5c-b4fa-364ddf8a0b32" type="Dspi_Ip" type_id="Dspi_Ip" mode="dspi_ip" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                     <config_set name="Dspi_Ip">
+                        <setting name="Name" value="Dspi_Ip"/>
+                        <struct name="ConfigTimeSupport">
+                           <setting name="POST_BUILD_VARIANT_USED" value="false"/>
+                           <setting name="IMPLEMENTATION_CONFIG_VARIANT" value="VARIANT-PRE-COMPILE"/>
+                        </struct>
+                        <struct name="SpiDriver">
+                           <setting name="Name" value="SpiDriver"/>
+                           <array name="SpiExternalDevice">
+                              <struct name="0">
+                                 <setting name="Name" value="SSBC"/>
+                                 <setting name="SpiBaudrate" value="1000000"/>
+                                 <setting name="SpiUseBaudrateConfig" value="false"/>
+                                 <setting name="SpiCsIdentifier" value="PCS0"/>
+                                 <setting name="SpiCsPolarity" value="LOW"/>
+                                 <setting name="SpiDataShiftEdge" value="LEADING"/>
+                                 <setting name="SpiHwUnit" value="CSIB0"/>
+                                 <setting name="SpiShiftClockIdleLevel" value="HIGH"/>
+                                 <setting name="SpiDataWidth" value="8"/>
+                                 <setting name="SpiDefaultData" value="0"/>
+                                 <setting name="SpiTransferStart" value="LSB"/>
+                                 <setting name="SpiTimeClk2Cs" value="0.000001"/>
+                                 <setting name="SpiTimeCs2Clk" value="0.000001"/>
+                                 <setting name="SpiTimeCs2Cs" value="0.000001"/>
+                                 <setting name="SpiCsBehavior" value="CS_KEEP_ASSERTED"/>
+                              </struct>
+                           </array>
+                           <array name="SpiBaudrateConfig"/>
+                        </struct>
+                        <struct name="SpiGeneral">
+                           <setting name="Name" value="SpiGeneral"/>
+                           <setting name="SpiEnableUserModeSupport" value="false"/>
+                           <setting name="SpiEnableDmaFastTransferSupport" value="false"/>
+                           <setting name="SpiIpDevErrorDetect" value="true"/>
+                           <setting name="SpiGlobalDmaEnable" value="false"/>
+                           <setting name="SpiTimeoutMethod" value="OSIF_COUNTER_DUMMY"/>
+                           <array name="SpiPhyUnit">
+                              <struct name="0">
+                                 <setting name="Name" value="SpiPhyUnit_0"/>
+                                 <setting name="SpiPhyUnitMapping" value="DSPI_0"/>
+                                 <setting name="SpiPhyUnitClockFunctionalGroupRef" value="ClockConfig0"/>
+                                 <setting name="SpiPhyUnitMode" value="SPI_MASTER"/>
+                                 <setting name="SpiContinuousSCK" value="false"/>
+                                 <setting name="SpiPhyUnitAsyncUseDma" value="false"/>
+                                 <array name="SpiPhyTxDmaChannel"/>
+                                 <array name="SpiPhyTxCmdDmaChannel"/>
+                                 <array name="SpiPhyRxDmaChannel"/>
+                                 <array name="SpiMaxDmaFastTransfer"/>
+                              </struct>
+                           </array>
                         </struct>
                      </config_set>
                   </instance>

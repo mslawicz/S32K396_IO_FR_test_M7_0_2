@@ -253,6 +253,17 @@ extern "C"{
 *
 */
 #define DioConf_DioChannel_DioChannel_LED1  ((uint16)0x008aU)
+/* ---------- DioPort_1 ---------- */
+
+/**
+* @brief          Symbolic name for the port DioPort_1.
+*/
+#define DioConf_DioPort_DioPort_1  ((uint8)0x01U)
+/**
+* @brief          Symbolic name for the channel PGOOD.
+*
+*/
+#define DioConf_DioChannel_PGOOD  ((uint16)0x001aU)
 
 /*=================================================================================================
 *                                             ENUMS

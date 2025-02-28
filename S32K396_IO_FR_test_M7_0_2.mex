@@ -30,6 +30,7 @@
             <processor_version>0.0.0</processor_version>
             <pin_labels>
                <pin_label pin_num="E2" pin_signal="PTE10" label="DEBUG_LED1"/>
+               <pin_label pin_num="L2" pin_signal="PTA26" label="PGOOD-DIG"/>
             </pin_labels>
          </pins_profile>
          <functions_list>
@@ -65,6 +66,11 @@
                   <pin peripheral="SIUL2" signal="gpio, 138" pin_num="E2" pin_signal="PTE10">
                      <pin_features>
                         <pin_feature name="direction" value="OUTPUT"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="SIUL2" signal="gpio, 26" pin_num="L2" pin_signal="PTA26">
+                     <pin_features>
+                        <pin_feature name="direction" value="INPUT"/>
                      </pin_features>
                   </pin>
                </pins>
@@ -845,6 +851,20 @@
                                  <array name="DioChannel">
                                     <struct name="0">
                                        <setting name="Name" value="DioChannel_LED1"/>
+                                       <setting name="DioChannelId" value="10"/>
+                                       <setting name="PDACSlot" value="VIRTUAL_WRAPPER_PDAC0"/>
+                                       <array name="DioChannelEcucPartitionRef"/>
+                                    </struct>
+                                 </array>
+                                 <array name="DioChannelGroup"/>
+                                 <array name="DioPortEcucPartitionRef"/>
+                              </struct>
+                              <struct name="1">
+                                 <setting name="Name" value="DioPort_1"/>
+                                 <setting name="DioPortId" value="1"/>
+                                 <array name="DioChannel">
+                                    <struct name="0">
+                                       <setting name="Name" value="PGOOD"/>
                                        <setting name="DioChannelId" value="10"/>
                                        <setting name="PDACSlot" value="VIRTUAL_WRAPPER_PDAC0"/>
                                        <array name="DioChannelEcucPartitionRef"/>

@@ -75,7 +75,12 @@ void vBlinkTask(void *pvParameters)
     (void)pvParameters;
     while (1)
     {
-    	Dio_FlipChannel(DioConf_DioChannel_DioChannel_LED1);
+    	/* read power good input */
+    	Dio_LevelType powerGood = Dio_ReadChannel(DioConf_DioChannel_PGOOD);
+
+    	/* indicate the power good signal on LED1 */
+    	Dio_WriteChannel(DioConf_DioChannel_DioChannel_LED1, powerGood);
+
         vTaskDelay(pdMS_TO_TICKS(500));  // 500 ms delay
     }
 }

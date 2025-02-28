@@ -36,6 +36,9 @@
                <pin_label pin_num="N15" pin_signal="PTC8" label="SSBC-CLK"/>
                <pin_label pin_num="L10" pin_signal="PTF28" label="SSBC-CS"/>
             </pin_labels>
+            <external_user_signals>
+               <properties/>
+            </external_user_signals>
          </pins_profile>
          <functions_list>
             <function name="PortContainer_0_BOARD_InitPeripherals">

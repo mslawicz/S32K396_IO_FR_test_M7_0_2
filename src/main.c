@@ -32,11 +32,15 @@
 #include "Mcu.h"
 #include "Port.h"
 #include "Dio.h"
+#include "Dspi_Ip.h"
 #include "FreeRTOS.h"
 #include "task.h"
 
+#define SPI_BUF_SIZE	4
+
 volatile int exit_code = 0;
-/* User includes */
+uint8_t rx_buf[SPI_BUF_SIZE];
+uint8_t tx_buf[SPI_BUF_SIZE] = {0x12, 0x34, 0x56, 0x78};
 
 void vBlinkTask(void *pvParameters);
 
@@ -60,6 +64,9 @@ int main(void)
     /* Initialize all pins using the Port driver */
     Port_Init(NULL_PTR);
 
+    /* Initialize SPI instance */
+    Dspi_Ip_Init(&Dspi_Ip_PhyUnitConfig_SpiPhyUnit_0_Instance_0);
+
     /* Create FreeRTOS task */
     xTaskCreate(vBlinkTask, "BlinkTask", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL);
 
@@ -73,13 +80,15 @@ int main(void)
 void vBlinkTask(void *pvParameters)
 {
     (void)pvParameters;
+    Dspi_Ip_StatusType status;
+
     while (1)
     {
-    	/* read power good input */
-    	Dio_LevelType powerGood = Dio_ReadChannel(DioConf_DioChannel_PGOOD);
+    	/* syncronous SPI transfer */
+    	status = Dspi_Ip_SyncTransmit(&Dspi_Ip_DeviceAttributes_SSBC_Instance_0, tx_buf, rx_buf, SPI_BUF_SIZE, 100);
 
-    	/* indicate the power good signal on LED1 */
-    	Dio_WriteChannel(DioConf_DioChannel_DioChannel_LED1, powerGood);
+    	/* show transfer status on LED */
+    	Dio_WriteChannel(DioConf_DioChannel_DioChannel_LED1, status == DSPI_IP_STATUS_SUCCESS);
 
         vTaskDelay(pdMS_TO_TICKS(500));  // 500 ms delay
     }

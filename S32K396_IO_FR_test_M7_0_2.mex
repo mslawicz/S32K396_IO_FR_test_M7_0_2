@@ -35,6 +35,8 @@
                <pin_label pin_num="N14" pin_signal="PTC9" label="SSBC-MISO"/>
                <pin_label pin_num="N15" pin_signal="PTC8" label="SSBC-CLK"/>
                <pin_label pin_num="L10" pin_signal="PTF28" label="SSBC-CS"/>
+               <pin_label pin_num="P5" pin_signal="PTD13" label="IO-EX-SDA"/>
+               <pin_label pin_num="M4" pin_signal="PTD14" label="IO-EX-SCL"/>
             </pin_labels>
             <external_user_signals>
                <properties/>
@@ -98,6 +100,20 @@
                   <pin peripheral="LPSPI0" signal="lpspi0_pcs0" pin_num="L10" pin_signal="PTF28">
                      <pin_features>
                         <pin_feature name="direction" value="OUTPUT"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="LPI2C0" signal="lpi2c0_sda" pin_num="P5" pin_signal="PTD13">
+                     <pin_features>
+                        <pin_feature name="direction" value="INPUT/OUTPUT"/>
+                        <pin_feature name="pullSelect" value="pullUp"/>
+                        <pin_feature name="pullEnable" value="enabled"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="LPI2C0" signal="lpi2c0_scl" pin_num="M4" pin_signal="PTD14">
+                     <pin_features>
+                        <pin_feature name="direction" value="OUTPUT"/>
+                        <pin_feature name="pullSelect" value="pullUp"/>
+                        <pin_feature name="pullEnable" value="enabled"/>
                      </pin_features>
                   </pin>
                </pins>

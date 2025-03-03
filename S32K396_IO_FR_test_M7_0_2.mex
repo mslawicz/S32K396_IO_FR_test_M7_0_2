@@ -679,11 +679,6 @@
                   <data type="Version">1.0.0</data>
                </feature>
             </dependency>
-            <dependency resourceType="Tool" resourceId="Clocks" description="The Clocks tool is required by the Peripherals tool, but it is disabled." problem_level="2" source="Peripherals">
-               <feature name="enabled" evaluation="equal">
-                  <data>true</data>
-               </feature>
-            </dependency>
          </dependencies>
          <generated_project_files>
             <file path="board/Siul2_Port_Ip_Cfg.c" update_enabled="true"/>
@@ -2661,11 +2656,11 @@
                                  <setting name="I2cChannelId" value="0"/>
                                  <setting name="I2cHwChannel" value="LPI2C_0"/>
                                  <setting name="I2cMasterSlaveConfiguration" value="MASTER_MODE"/>
-                                 <setting name="I2cOperatingMode" value="LPI2C_STANDARD_MODE"/>
+                                 <setting name="I2cOperatingMode" value="LPI2C_FASTPLUS_MODE"/>
                                  <array name="I2cChannelEcucPartitionRef"/>
                                  <struct name="I2cMasterConfiguration">
                                     <setting name="Name" value="I2c_Lpi2cMasterChannel0"/>
-                                    <setting name="I2cPrescaler" value="LPI2C_MASTER_PRESC_DIV_1"/>
+                                    <setting name="I2cPrescaler" value="LPI2C_MASTER_PRESC_DIV_32"/>
                                     <setting name="I2cDataValidDelay" value="1"/>
                                     <setting name="I2cSetupHoldDelay" value="2"/>
                                     <setting name="I2cClockHighPeriod" value="1"/>
@@ -2675,7 +2670,9 @@
                                     <setting name="I2cMasterFilterEnable" value="false"/>
                                     <setting name="I2cGlitchFilterSDA" value="0"/>
                                     <setting name="I2cGlitchFilterSCL" value="0"/>
-                                    <array name="I2cClockRef"/>
+                                    <array name="I2cClockRef">
+                                       <setting name="0" value="/Mcu/Mcu/McuModuleConfiguration/McuClockSettingConfig_0/McuClockReferencePoint_0"/>
+                                    </array>
                                     <setting name="I2cAsyncMethod" value="LPI2C_USING_INTERRUPTS"/>
                                     <array name="I2cDmaTxChannelRef"/>
                                     <array name="I2cDmaRxChannelRef"/>

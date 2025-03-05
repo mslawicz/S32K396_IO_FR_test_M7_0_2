@@ -33,14 +33,19 @@
 #include "Port.h"
 #include "Dio.h"
 #include "Dspi_Ip.h"
+#include "Lpi2c_Ip.h"
 #include "FreeRTOS.h"
 #include "task.h"
 
 #define SPI_BUF_SIZE	4
+#define I2C_BUF_SIZE	3
+#define IO_EX_I2C		0
+#define IO_EX_ADDR		0x74	/* IO expander I2C address */
 
 volatile int exit_code = 0;
 uint8_t rx_buf[SPI_BUF_SIZE];
 uint8_t tx_buf[SPI_BUF_SIZE] = {0x12, 0x34, 0x56, 0x78};
+uint8_t i2c_tx_buf[I2C_BUF_SIZE] = {0x12, 0x34, 0x56};
 
 void vBlinkTask(void *pvParameters);
 
@@ -67,6 +72,9 @@ int main(void)
     /* Initialize SPI instance */
     Dspi_Ip_Init(&Dspi_Ip_PhyUnitConfig_SpiPhyUnit_0_Instance_0);
 
+    /* Initialize I2C instance */
+    Lpi2c_Ip_MasterInit(IO_EX_I2C, &I2c_Lpi2cMasterChannel0);
+
     /* Create FreeRTOS task */
     xTaskCreate(vBlinkTask, "BlinkTask", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL);
 
@@ -89,6 +97,15 @@ void vBlinkTask(void *pvParameters)
 
     	/* show transfer status on LED */
     	Dio_WriteChannel(DioConf_DioChannel_DioChannel_LED1, status == DSPI_IP_STATUS_SUCCESS);
+
+    	/* set I2C slave device address */
+    	Lpi2c_Ip_MasterSetSlaveAddr(IO_EX_I2C, IO_EX_ADDR, FALSE);
+    	/* blocking I2C transmission */
+    	Lpi2c_Ip_StatusType i2c_status = Lpi2c_Ip_MasterSendDataBlocking(IO_EX_I2C,  i2c_tx_buf, I2C_BUF_SIZE, TRUE, 10);
+    	if(i2c_status != LPI2C_IP_SUCCESS_STATUS)
+    	{
+    		/* handle I2C transmission error here */
+    	}
 
         vTaskDelay(pdMS_TO_TICKS(500));  // 500 ms delay
     }

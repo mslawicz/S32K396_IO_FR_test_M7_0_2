@@ -116,6 +116,8 @@
                         <pin_feature name="pullEnable" value="enabled"/>
                      </pin_features>
                   </pin>
+                  <pin peripheral="CAN0" signal="can0_tx" pin_num="L12" pin_signal="PTG20"/>
+                  <pin peripheral="CAN0" signal="can0_rx" pin_num="C14" pin_signal="PTD29"/>
                </pins>
             </function>
          </functions_list>

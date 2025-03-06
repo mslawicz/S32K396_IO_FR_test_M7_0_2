@@ -34,6 +34,7 @@
 #include "Dio.h"
 #include "Dspi_Ip.h"
 #include "Lpi2c_Ip.h"
+#include "FlexCAN_Ip.h"
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -41,11 +42,18 @@
 #define I2C_BUF_SIZE	3
 #define IO_EX_I2C		0
 #define IO_EX_ADDR		0x74	/* IO expander I2C address */
+#define FlexCAN0		0
+#define TX_MB_IDX       0   	/* Message Buffer 0 */
+#define CAN_FRAME_SIZE	8
 
 volatile int exit_code = 0;
 uint8_t rx_buf[SPI_BUF_SIZE];
 uint8_t tx_buf[SPI_BUF_SIZE] = {0x12, 0x34, 0x56, 0x78};
 uint8_t i2c_tx_buf[I2C_BUF_SIZE] = {0x12, 0x34, 0x56};
+uint8_t can_frame[CAN_FRAME_SIZE] = {0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0};
+
+/* Data Info Structure */
+static Flexcan_Ip_DataInfoType txInfo;
 
 void vBlinkTask(void *pvParameters);
 
@@ -74,6 +82,9 @@ int main(void)
 
     /* Initialize I2C instance */
     Lpi2c_Ip_MasterInit(IO_EX_I2C, &I2c_Lpi2cMasterChannel0);
+
+    /* Initialize the FlexCAN module */
+    FlexCAN_Ip_Init(FlexCAN0, &FlexCAN_State0, &FlexCAN_Config0);
 
     /* Create FreeRTOS task */
     xTaskCreate(vBlinkTask, "BlinkTask", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL);
@@ -105,6 +116,24 @@ void vBlinkTask(void *pvParameters)
     	if(i2c_status != LPI2C_IP_SUCCESS_STATUS)
     	{
     		/* handle I2C transmission error here */
+    	}
+
+    	/* send a CAN frame */
+    	Flexcan_Ip_StatusType Flexcan_status;
+    	const uint32 msg_id = 0x123; // Standard CAN ID
+
+        /* Configure the Data Info Structure */
+        txInfo.msg_id_type = FLEXCAN_MSG_ID_STD; // Standard ID (11-bit)
+        txInfo.data_length = CAN_FRAME_SIZE;
+        txInfo.fd_enable = FALSE; // Disable CAN FD (use classic CAN)
+        txInfo.enable_brs = FALSE; // No Bit Rate Switching
+        txInfo.is_remote = FALSE; // No Remote Frame
+
+        /* send a frame in blocking mode */
+    	Flexcan_status = FlexCAN_Ip_SendBlocking(FlexCAN0, TX_MB_IDX, &txInfo, msg_id, can_frame, 100);
+    	if(Flexcan_status != FLEXCAN_STATUS_SUCCESS)
+    	{
+    		/* handle FlexCAN error here */
     	}
 
         vTaskDelay(pdMS_TO_TICKS(500));  // 500 ms delay

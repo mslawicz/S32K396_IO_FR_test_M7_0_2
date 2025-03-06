@@ -2795,7 +2795,7 @@
                               <setting name="timeStampSurce" value="FLEXCAN_CAN_CLK_TIMESTAMP_SRC"/>
                               <setting name="msgBuffTimeStampType" value="FLEXCAN_MSGBUFFTIMESTAMP_TIMER"/>
                               <setting name="hrConfigType" value="FLEXCAN_TIMESTAMPCAPTURE_DISABLE"/>
-                              <setting name="pe_clock_frequency" value="0"/>
+                              <setting name="pe_clock_frequency" value="1000000"/>
                               <struct name="flexcan_time_segment">
                                  <setting name="Name" value="FlexCAN_Ip_TimeSeg0"/>
                                  <setting name="flexcan_cfg_propSeg" value="8"/>
